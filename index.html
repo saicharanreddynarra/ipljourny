@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IPL Score Predictor</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.hindustantimes.com/img/2022/03/15/1600x900/ipl-ipl_1645687141402_1647339861086.jpg') no-repeat center center fixed;
+            background-size: cover;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 3rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: #ffd700;
+            animation: glow 1.5s ease-in-out infinite alternate;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.7);
+            backdrop-filter: blur(10px);
+            transition: transform 0.5s ease;
+            width: 400px;
+            text-align: center;
+        }
+
+        .container:hover {
+            transform: scale(1.05);
+        }
+
+        label {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            display: block;
+            color: #ffd700;
+        }
+
+        select, input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: none;
+            background-color: rgba(255, 255, 255, 0.3);
+            color: #fff;
+            font-size: 1rem;
+            transition: background-color 0.3s ease;
+        }
+
+        select:hover, input:hover {
+            background-color: rgba(255, 255, 255, 0.5);
+        }
+
+        select:focus, input:focus {
+            outline: none;
+            border: 2px solid #ffd700;
+            background-color: rgba(255, 255, 255, 0.6);
+        }
+
+        button {
+            background-color: #ffd700;
+            color: black;
+            border: none;
+            padding: 15px 20px;
+            font-size: 1.3rem;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            width: 100%;
+        }
+
+        button:hover {
+            background-color: #ffcc00;
+            transform: translateY(-5px);
+        }
+
+        button:active {
+            transform: translateY(2px);
+        }
+
+      
+        .prediction-text {
+            margin-top: 20px;
+            font-size: 1.5rem;
+            text-align: center;
+            color: #ffd700;
+            background: rgba(255, 215, 0, 0.2);
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+            animation: fadeIn 1s ease;
+        }
+
+       
+        @keyframes glow {
+            from {
+                text-shadow: 2px 2px 5px rgba(255, 255, 255, 0.8);
+            }
+            to {
+                text-shadow: 2px 2px 20px rgba(255, 215, 0, 1);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        
+        @media (max-width: 600px) {
+            .container {
+                width: 90%;
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            button {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>IPL Score Predictor</h1>
+        <form action="/predict" method="POST">
+            <label for="batting_team">Batting Team:</label>
+            <select name="batting_team" required>
+                <option value="Chennai Super Kings">Chennai Super Kings</option>
+                <option value="Delhi Daredevils">Delhi Daredevils</option>
+                <option value="Kings XI Punjab">Kings XI Punjab</option>
+                <option value="Kolkata Knight Riders">Kolkata Knight Riders</option>
+                <option value="Mumbai Indians">Mumbai Indians</option>
+                <option value="Rajasthan Royals">Rajasthan Royals</option>
+                <option value="Royal Challengers Bangalore">Royal Challengers Bangalore</option>
+                <option value="Sunrisers Hyderabad">Sunrisers Hyderabad</option>
+            </select><br>
+
+            <label for="bowling_team">Bowling Team:</label>
+            <select name="bowling_team" required>
+                <option value="Chennai Super Kings">Chennai Super Kings</option>
+                <option value="Delhi Daredevils">Delhi Daredevils</option>
+                <option value="Kings XI Punjab">Kings XI Punjab</option>
+                <option value="Kolkata Knight Riders">Kolkata Knight Riders</option>
+                <option value="Mumbai Indians">Mumbai Indians</option>
+                <option value="Rajasthan Royals">Rajasthan Royals</option>
+                <option value="Royal Challengers Bangalore">Royal Challengers Bangalore</option>
+                <option value="Sunrisers Hyderabad">Sunrisers Hyderabad</option>
+            </select><br>
+
+            <label for="runs">Runs:</label>
+            <input type="number" name="runs" min="0" required><br>
+
+            <label for="wickets">Wickets:</label>
+            <input type="number" name="wickets" min="0" max="10" required><br>
+
+            <label for="overs">Overs:</label>
+            <input type="number" step="0.1" name="overs" min="0" max="20" required><br>
+
+            <label for="runs_last_5">Runs in Last 5 Overs:</label>
+            <input type="number" name="runs_last_5" min="0" required><br>
+
+            <label for="wickets_last_5">Wickets in Last 5 Overs:</label>
+            <input type="number" name="wickets_last_5" min="0" max="10" required><br>
+
+            <button type="submit">Predict Score</button>
+        </form>
+
+        {% if prediction_text %}
+        <div class="prediction-text">
+            <h3>{{ prediction_text }}</h3>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>
